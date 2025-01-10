@@ -1,30 +1,42 @@
-from msal import PublicClientApplication
-import requests
+import streamlit as st
+from msal import ConfidentialClientApplication
+import requests, os
 from datetime import datetime, timedelta
 
 class OutlookCalendar:
-    def __init__(self, environment="development"):
-        self.client_id = '837eeb79-b660-4038-a54c-a1117ed13f37'  # From Azure Portal
-        self.authority = "https://login.microsoftonline.com/consumers"
-        self.scope = ["Calendars.ReadWrite"]
+    def __init__(self):
+
+        # Get credentials from Streamlit secrets
+        self.client_id = st.secrets['OUTLOOK_CLIENT_ID']
+        self.tenant_id = st.secrets['OUTLOOK_TENANT_ID']
+        self.client_secret = st.secrets['OUTLOOK_CLIENT_SECRET_VALUE']
         
+        if not all([self.client_id, self.tenant_id, self.client_secret]):
+            raise ValueError("Missing required secrets")
+            
+        self.authority = f"https://login.microsoftonline.com/{self.tenant_id}"
+        self.scope = ["https://graph.microsoft.com/.default"]
+
         # Set redirect URI based on environment
         # self.redirect_uri = ("http://localhost" if environment == "development" 
         #                    else "https://your-website.com/auth")
         
-        self.app = PublicClientApplication(
+        # self.app = PublicClientApplication(
+        #     client_id=self.client_id,
+        #     authority=self.authority
+        # )
+
+    def get_token(self):
+        app = ConfidentialClientApplication(
             client_id=self.client_id,
+            client_credential=self.client_secret,
             authority=self.authority
         )
 
-    def get_token(self):
-        accounts = self.app.get_accounts()
-        if accounts:
-            result = self.app.acquire_token_silent(self.scope, account=accounts[0])
-        else:
-            result = self.app.acquire_token_interactive(scopes=self.scope)
-        
-        return result['access_token'] if result else None
+        result = app.acquire_token_for_client(scopes=self.scope)
+        if not result.get('access_token'):
+            raise Exception("Failed to acquire token")
+        return result['access_token']
 
     def get_calendar_events(self, start_date=None, end_date=None):
         if not start_date:

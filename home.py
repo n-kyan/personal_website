@@ -2,14 +2,7 @@ import streamlit as st
 from page_init import page_init
 from meeting_form import insert_meeting_form
 
-# Application (client) ID:
-# 837eeb79-b660-4038-a54c-a1117ed13f37
 
-# Object ID:
-# a051d8e3-63af-4a01-8c73-2d80533a95d4
-
-# Directory (tenant) ID:
-# f76c6a59-2c29-4223-ba16-573148719ce5
 
 def main():
 
