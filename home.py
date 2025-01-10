@@ -1,7 +1,6 @@
 import streamlit as st
 from page_init import page_init
 from meeting_form import insert_meeting_form
-# Microsoft Azure App Registration info:
 
 # Application (client) ID:
 # 837eeb79-b660-4038-a54c-a1117ed13f37
