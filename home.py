@@ -1,6 +1,4 @@
 import streamlit as st
-from datetime import datetime, timedelta
-from calendar_source import OutlookCalendar  # Import our calendar class
 from page_init import page_init
 from meeting_form import insert_meeting_form
 # Microsoft Azure App Registration info:
