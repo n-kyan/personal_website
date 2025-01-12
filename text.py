@@ -7,7 +7,7 @@ from email.utils import formatdate
 import os
 from icalendar import Calendar, Event, vText
 from dotenv import load_dotenv
-
+import streamlit as st
 @dataclass
 class MeetingDetails:
     title: str
@@ -24,7 +24,7 @@ class CalendarInviteSender:
         self.sender_name = sender_name
         self.sender_formatted = f"{sender_name} <{sender_email}>"
         
-        self.email_password = os.getenv('EMAIL_APP_PASSWORD')
+        self.email_password = st.secrets['EMAIL_APP_PASSWORD']
         if not self.email_password:
             raise ValueError("EMAIL_APP_PASSWORD environment variable not set")
 
