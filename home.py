@@ -1,7 +1,7 @@
 import streamlit as st
 from page_init import page_init
 from meeting_form import insert_meeting_form
-
+from text import test
 
 
 def main():
@@ -22,7 +22,9 @@ def main():
             st.image("static/headshot.png", width=400)
 
     st.header("Schedule a Coffee Chat:")
-    insert_meeting_form()
+    # insert_meeting_form()
+    if st.button("Send"):
+        test()
 
 if __name__ == "__main__":
     main()
